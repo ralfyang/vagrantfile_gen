@@ -2,12 +2,12 @@
 Vagrantfile generator for each different environment(such as KVM, Virtualbox).This Vagrantfile has the Docker & Mesos stack(Docker, Mesos, Marathon, Consul, Haproxy, Bakery-Docker image builder with monit)
 
 ## Vagrant Images
- * CentOS 6: http://192.52.164.254/repo/centos-6.6-x86_64.box
- * Ubuntu 14.04: http://192.52.164.254/repo/trusty-server-cloudimg-amd64-vagrant-disk1.box
+ * CentOS 6: https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.0.0/centos-6.6-x86_64.box
+ * Ubuntu 14.04: https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box
  * How to get:
 ```
-vagrant box add centos6 http://192.52.164.254/repo/centos-6.6-x86_64.box
-vagrant box add ubuntu1404 http://192.52.164.254/repo/trusty-server-cloudimg-amd64-vagrant-disk1.box
+vagrant box add centos6 https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.0.0/centos-6.6-x86_64.box
+vagrant box add ubuntu1404 https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box
 ```
 
 ## Directory
