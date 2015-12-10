@@ -121,7 +121,7 @@ was_test_public="192.0.1.12x"
 
  * You just can run the script as below with each configuration for VMs IP range
 ```
-vagrantfile_gen.sh
+sudo vagrantfile_gen.sh
 ```
  * Move first to directory of each service
 ```
