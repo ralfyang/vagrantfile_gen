@@ -1,5 +1,14 @@
 # vagrantfile_gen
-Vagrantfile generator for each differenc environment(such as KVM, Virtualbox)
+Vagrantfile generator for each different environment(such as KVM, Virtualbox)
+
+## Vagrant Images
+ * CentOS 6: http://192.52.164.254/repo/centos-6.6-x86_64.box
+ * Ubuntu 14.04: http://192.52.164.254/repo/trusty-server-cloudimg-amd64-vagrant-disk1.box
+ * How to get:
+```
+vagrant box add centos6 http://192.52.164.254/repo/centos-6.6-x86_64.box
+vagrant box add ubuntu1404 http://192.52.164.254/repo/trusty-server-cloudimg-amd64-vagrant-disk1.box
+```
 
 ## Directory
 ```
@@ -87,19 +96,54 @@ was_test_private="192.168.121.12x"
 was_test_public="192.0.1.12x"
 ```
 
+
+
+## List of VMs on each directory
+
+ * Test env
+  * was0[1-9]: for was cluster test
+  * web0[1-9]: for web cluster test
+  * mgmt01: for zinst manager test
+ * Bakery env
+  * bakery_global, bakery_mc: for Gravity Bakery
+  * master0[1-9].mesos: for mesos master
+ * Mesos env
+  * slave0[1-9].mesos: for mesos slave
+ * Consul env
+  * bootstrap.consul: for consul bootstrap mode
+  * server0[1-9].consul: for consul server mode
+  * client0[1-9].consul: for consul client mode
+ * Haproxy env
+  * master01.haproxy
+  * slave01.haproxy
+
 ## How to use
-* You just can run the script as below with each configuration for VMs IP range
+
+ * You just can run the script as below with each configuration for VMs IP range
 ```
 vagrantfile_gen.sh
 ```
+ * Move first to directory of each service
+```
+cd service
+```
 
+ * `vagrant up` is a command for Build-up the instance
+```
+vagrant up [VM name]
+```
 
+ * `vagrant ssh`  for try to insert the instance
+```
+vagrant ssh [VM name]
+```
 
-
-
-
-
-
+## MISC
+ * The `provisioning` directory has files for provisioning of instance
+ * You can change the `Vagrantfile` by some argument of what you need as below
+```
+	config.vm.provision "shell", path: "../../provisioning/mesos.sh", args: "mc slave 192.53.15.219 192.53.26.149"
+```
 
 
 
