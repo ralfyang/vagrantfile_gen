@@ -1,6 +1,5 @@
 # vagrantfile_gen
-Vagrantfile generator for each different environment(such as KVM, Virtualbox)
-This Vagrantfile has the Docker & Mesos stack(Docker, Mesos, Marathon, Consul, Haproxy, Bakery-Docker image builder with monit)
+Vagrantfile generator for each different environment(such as KVM, Virtualbox).This Vagrantfile has the Docker & Mesos stack(Docker, Mesos, Marathon, Consul, Haproxy, Bakery-Docker image builder with monit)
 
 ## Vagrant Images
  * CentOS 6: http://192.52.164.254/repo/centos-6.6-x86_64.box
