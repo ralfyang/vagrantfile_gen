@@ -1,10 +1,10 @@
-hypervisor_ip="192.0.1.12"
+hypervisor_ip="10.0.1.12"
 
-zisnt_repo_ip="192.52.164.254"
-zisnt_repo_host="package.ralfyang.com"
+zisnt_repo_ip="10.52.164.254"
+zisnt_repo_host="package.dist.gsenext.com"
 
 was_private="192.168.121.12x"
-was_public="192.0.1.12x"
+was_public="10.0.1.12x"
 
 web_private="192.168.33.1x"
 
@@ -23,5 +23,5 @@ baker_global_private="192.168.33.200"
 
 web_test_private=192.168.33.1x
 was_test_private=192.168.121.12x
-was_test_public=192.0.1.12x
+was_test_public=10.0.1.12x
 

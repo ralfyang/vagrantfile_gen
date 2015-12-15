@@ -4,7 +4,7 @@ PACKAGENAME = vagrantfile_gen
 VERSION = 0.0.1
 AUTHORIZED = ralf.yang@gsshop.com
 DESCRIPTION = 'Vagrantfile generator with consul connection'
-CUSTODIAN = gsshop-eit-team
+CUSTODIAN = gsshop-iic
 
 ### Global setting of the files
 OWNER = root
@@ -12,7 +12,7 @@ GROUP = wheel
 PERM = 664
 
 FILE 755 - - z/vagrant/vagrantfile_gen.sh 				 ./vagrantfile_gen.sh
-FILE 664 - - z/vagrant/conf/consul.conf 				 ./conf/consul.conf
+FILE 664 - - z/vagrant/conf/zzz_consul.conf 				 ./conf/zzz_consul.conf
 FILE 664 - - z/vagrant/conf/mesos.conf 					 ./conf/mesos.conf
 FILE 664 - - z/vagrant/conf/test.conf 					 ./conf/test.conf
 FILE 664 - - z/vagrant/conf/haproxy.conf 	 	 	 	 ./conf/haproxy.conf
