@@ -10,7 +10,7 @@ conf_dir="./conf"
 Vagrantfile_base="./service"
 host_keydir="/data/var/vagrant"
 
-sudo rm -Rf $Vagrantfile_base/*
+sudo rm -Rf $Vagrantfile_base/*/Vagrantfile
 
 Conf_create(){
 input_type=$1
@@ -20,7 +20,6 @@ input_type=$1
 	elif [[ $input_type = "consul" ]];then
 		host_list_json=`curl -sL http://10.53.15.219:8500/v1/kv/hypervisors?keys`
 		host_list=(`echo  "$host_list_json" |sed -e 's/\[\(.*\)\]/\1/g' -e 's/,/ /g' -e 's/"//g'`)
-		
 			Hcount=0
 			while [ $Hcount -lt ${#host_list[@]} ];do
 				host_list[$Hcount]=`echo "${host_list[$Hcount]}" | awk -F '/' '{print $(NF-1)}'`
@@ -41,56 +40,52 @@ input_type=$1
 			cat $hostfile_dir/${host_list[$Count]}.list | sed -e 's/[0-9]x/&{i}/g' -e 's/x{/#{/g' >> $output_file
 		elif [[ $input_type = "consul" ]];then
 			echo "#!/bin/bash" > $output_file
+			checkdata=`curl -s "$consul_url/${host_list[$Count]}/data?raw"  | sed -e 's/[0-9]x/&{i}/g' -e 's/x{/#{/g'`
+				if [[ $checkdata = "" ]];then
+					remove_target_dir="$Vagrantfile_base/${host_list[$Count]}"	
+				fi
 			curl -s "$consul_url/${host_list[$Count]}/data?raw"  | sed -e 's/[0-9]x/&{i}/g' -e 's/x{/#{/g' >> $output_file
 			sudo mkdir -p $host_keydir
 			sudo curl -s "$consul_url/${host_list[$Count]}/ssh-key?raw" -o $host_keydir/${host_list[$Count]}.key
+			if [[ `(whoami)` = "root" ]]; then
+				chmod 600 $host_keydir/${host_list[$Count]}.key
+				chown root.wheel $host_keydir/${host_list[$Count]}.key
+			else
+				sudo chmod 640 $host_keydir/${host_list[$Count]}.key
+				sudo chown root.wheel $host_keydir/${host_list[$Count]}.key
+			fi
         	fi
         
 		## Start to stamping for vagrant export
 		echo "" >> $output_file
+
 		cat << EOF >>  $output_file
-	if [[ \$zisnt_repo_ip = "" ]];then
-		zisnt_repo_ip="10.52.164.254"
+	if [[ \$zinst_repo_ip = "" ]];then
+		zinst_repo_ip="10.52.164.254"
 	fi
-	if [[ \$zisnt_repo_host = "" ]];then
-		zisnt_repo_host="package.dist.gsenext.com"
+	if [[ \$zinst_repo_host = "" ]];then
+		zinst_repo_host="package.dist.gsenext.com"
 	fi
 EOF
 		echo "cat << EOF > $result_file" >> $output_file
 
-        
-		## Vagrant basic script export
+
 		cat << EOF >> $output_file
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.a
 
-# Script for Default env. of zinst
-\\\$script = <<SCRIPT
-LANG=en_US.UTF-8
-sed -i '/^LANG=/d' /etc/sysconfig/i18n
-echo 'LANG=en_US.UTF-8' >> /etc/sysconfig/i18n
-sed -i 's/=enforcing/=disabled/g' /etc/selinux/config
-setenforce 0
-curl -sL http://bit.ly/online-install |sh
-/usr/bin/zinst self-conf ip=\$zisnt_repo_ip host=\$zisnt_repo_host
-zinst self-update
-zinst i server_default_setting gsshop_account_policy -stable
-zinst i monit -stable
-SCRIPT
-
-
-
 VAGRANTFILE_API_VERSION = "2"
 NODE_COUNT = 10
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.provision "shell", inline: \\\$script
+  config.vm.provision "shell", path: "../../provisioning/default_setting.sh", args: "type=$input_type ip=\$zinst_repo_ip host=\$zinst_repo_host dns=\$domain_server http_proxy=10.53.15.219:3128"
+
 EOF
+
 
 		## Each configuration export
 		cat $conf_dir/*.conf >> $output_file
@@ -119,6 +114,7 @@ EOF
 #		cat $result_file
         
 	let Count=$Count+1
+	rm -Rf $remove_target_dir
 	done
 }
 

@@ -5,7 +5,6 @@ role=$2
 master_ip=$3
 adv_ip=$4
 
-
 ## source docker_registry.sh -- not works
 ## Docker registry of Gravity
 gravity_mgmt="10.53.15.219:8500"
@@ -25,7 +24,7 @@ echo ""
 ## Make a Git directory
 mkdir /root/Git/
 ## Docker install for ubuntu
-zinst i docker -stable
+zinst i server_default_setting docker -stable
 
 ## Local IP Find
 IPaddr=`ifconfig eth1 |awk '/inet addr/ {print $2}' | sed -e 's/addr://g'`
